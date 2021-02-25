@@ -15,7 +15,6 @@
 # I'll solve this first to get an understanding of how to
 
 
-
 def arithmetic_arranger(problems, bool=False):
 
     # Create empty arranged_problems list.
@@ -56,11 +55,7 @@ def arithmetic_arranger(problems, bool=False):
     else:
         arranged_lsts.append(first)
         arranged_lsts.append(second)
-        arranged_lsts.append(third)
+        arranged_lsts.append(fourth)
 
 
-    # Now we have to format our lists
-
-
-    return arranged_lsts
-    return arranged_problems
+    # format your lists . . . somehow

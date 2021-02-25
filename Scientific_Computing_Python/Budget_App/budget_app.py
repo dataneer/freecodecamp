@@ -76,13 +76,19 @@ class Category:
     # description is given, it should default to an empty string. The method
     # should append an object to the ledger list in the form of
     # `{"amount": amount, "description": description}`.
-    def deposit(self, deposit_amt, description):
-        self.deposit_amt = deposit_amt
+    def deposit(self, amount, description):
         self.description = description
         # First make the dictionary with your two variables
-        dict = {"amount": deposit_amt, "description": description}
+        dict = {"amount": amount, "description": description}
         # Append the dictionary to the instance variable list of ledger
         self.ledger.append(dict)
+
+    # A `get_balance` method that returns the current balance of the budget
+    # category based on the deposits and withdrawals that have occurred.
+    def get_balance(self):
+        for i in self.ledger:
+            balance = sum(item['amount'] for item in self.ledger)
+            return balance
 
     # A `withdraw` method that is similar to the `deposit` method, but the
     # amount passed in should be stored in the ledger as a negative number.
@@ -90,24 +96,21 @@ class Category:
     # This method should return `True` if the withdrawal took place, and
     # False` otherwise.
     def withdraw(self, withdraw_amt, description):
-        self.withdraw_amt = withdraw_amt
+        # save the variables entered in the method to reference
         self.description = description
-        # If the withdraw amt is greater than the deposit amt then returns
-        # False
-        if self.withdraw_amt < self.deposit_amt:
-            dict = {"amount": 1 - withdraw_amt, "description": description}
-            self.ledger.append(dict)
-            return True
-        # Else, return True that the user can withdraw successfully
-        else:
-            return False
-
-    # A `get_balance` method that returns the current balance of the budget
-    # category based on the deposits and withdrawals that have occurred.
-    def get_balance(self):
         for i in self.ledger:
+            # sum the dictionary to get the current balance
             balance = sum(item['amount'] for item in self.ledger)
-        return balance
+            if withdraw_amt < balance:
+                # subtract the withdraw at by 0 to get the negative value
+                dict = {"amount": 0 - withdraw_amt, "description": description}
+                # TODO: I think this is really bad Pythonic fix later
+                self.ledger.append(dict)
+                return True
+            # Else, return True that the user can withdraw successfully
+            else:
+                # print("Testing: no money")
+                return False
 
     # A `transfer` method that accepts an amount and another budget category
     # as arguments. The method should add a withdrawal with the amount and
@@ -118,13 +121,51 @@ class Category:
     # method should return `True` if the transfer took place, and `False`
     # otherwise.
 
-    def transfer(self, amount, description):
-        self.amount = amount
-        description = description
-        # The method should add a withdrawal with the amount and
-        # the description "Transfer to [Destination Budget Category]"
-        # Wtf does this mean
-        print(f"Transfer to {self.description}")
+    # This section was really difficult for me because I didn't know
+    # how to make the class acknowledge another object instance and get
+    # that object instance's name
+
+    # So for a long time I thought it was self.category
+    # But that's referencing the category of the object I am using the
+    # .transfer method on
+
+    # My breakthrough was understanding I need to use destination.category
+    # because I want the category attribute of THAT specific object and
+    # destination.category works because destination has the category attribute
+    # of category
+
+    # This is really hard to explain no wonder a lot of people struggle
+
+    # I really don't know how I maed this connection but playing around with
+    # bankaccount_class.py helped me understand classes a lot
+
+    def transfer(self, amount, destination):
+        for i in self.ledger:
+            # get the balance of the current object that transfer is being
+            # acted upon - sorry I konw there's a correct technical term
+            # TODO: find the correct technical term^
+            balance = sum(item['amount'] for item in self.ledger)
+            if amount < balance:
+                self.withdraw(amount, f"Transfer to {destination.category}")
+                dict = {"amount": amount, "decsription": f"Transfer from {self.category}"}
+                # TODO: I think this is really bad Pythonic fix later
+                destination.ledger.append(dict)
+                break
+                return True
+            else:
+                return False
+
+    # A `check_funds` method that accepts an amount as an argument. It
+    # returns `False` if the amount is greater than the balance of the budget
+    # category and returns `True` otherwise. This method should be used by
+    # both the `withdraw` method and `transfer` method.
+
+    def check_funds(self, amount):
+
+
+
+
+
 
 
 
@@ -147,32 +188,3 @@ This function will be tested with up to four categories.
 Look at the example output below very closely and make sure the spacing of the
 output matches the example exactly.
 """
-
-
-food = Category("Food")
-food.deposit(1000, "initial deposit")
-food.withdraw(10.15, "groceries")
-food.withdraw(15.89, "restaurant and more food for dessert")
-print(food.get_balance())
-clothing = Category("Clothing")
-food.transfer(50, clothing)
-
-
-def Account(self, name):
-    self.name = name
-
-    def deposit(self, amt, description):
-        self.amt = amt
-        self.description = description
-
-    def transfer(self, amt, name):
-        self.amt = amt
-        self.name = names
-        # self.decsription only prints the object gibberish by the way
-        print(f"Transfer to {self.description}")
-        # . . . ??? ? I don´t know how else to proceed from here
-
-account_a = Account("Account A")
-account_a.deposit(500,"Starting balance")
-account_b = Account("Account B")
-account_a.transfer(100, account_b)
