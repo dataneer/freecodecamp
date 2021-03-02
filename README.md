@@ -9,3 +9,4 @@ As of February 24, 2021: I am trudging through the Scientific Computing projects
 
 Successfully completed:
  * Time Calculator
+ * Arithmetic Arranger - 03/02/2021
