@@ -38,6 +38,5 @@ class UnitTests(unittest.TestCase):
         expected = "   32         1      45      123\n- 698    - 3801    + 43    +  49\n-----    ------    ----    -----\n -666     -3800      88      172"
         self.assertEqual(actual, expected, 'Expected solutions to be correctly displayed in output when calling "arithmetic_arranger()" with arithmetic problems and a second argument of `True`.')
 
-
 if __name__ == "__main__":
     unittest.main()

@@ -1,20 +1,4 @@
 
-# This is a file belonging to internet moniker 'dataneer' as
-# I try to solve the freecodecamp arithmetic_arranger project
-
-# Function recives list of strings that are arithmetic problems
-# and returns the problems arranged vertically and side-by-side
-# Optional second option if 'True' displays answers
-
-# --- Rules ---
-# problems are properly formatted, otherwise, it will **return**
-# a **string** that describes an error that is meaningful to the user.
-
-# This challenge sort of reminds me of
-# https://www.hackerrank.com/challenges/list-comprehensions/problem
-# I'll solve this first to get an understanding of how to
-
-
 # Environment to play with smaller pieces of code so I can carry those
 # concepts to the arithmetic_arranger.py file
 
@@ -32,6 +16,8 @@ Output:
 ----    ------    ------    -----
   40     -3800     19998      474
 """
+
+
 
 # Function to cnvert a list to string using join() function
 def listToString(s):
@@ -158,3 +144,83 @@ def arithmetic_arranger(problems,input=False):
 
 
     return arranged_problems
+
+
+    """
+    Edit: it appears the following code doesn't give the ouput of newlines
+    that freeCodeCamp wants but I still like what I learned from it
+
+    # Now we gotta format arranged_problems using code I stole from the
+    # internet
+    # Stack Overflow Question: https://tinyurl.com/yxtyf6rx
+    # by Patrick Artner
+
+    # I'm going to try to understand this code instead of copy it
+
+    # Transpose the lists of list arranged_problems, get the max of each
+    # column and store in as dict[column]=length
+
+    # The following is a Nested List Comprehension
+    # and I don't even 100% understand a single List Comprehension so let's goo
+
+    # It appears nest list comps are best to operate on multidimensional arrays
+    # because it acts on each dimension of the matrix
+    col_len = {i:max(map(len,inner)) for i,inner in enumerate(zip(*arranged_problems))}
+
+    # Print(col_len) gives an example: {0: 6, 1: 6, 2: 3, 3: 4}
+
+    # Print using the column index from enumerate to lookup this columns length
+    for inner in arranged_problems:
+        # I'm going to try to understand this code instead of copy it
+
+        #
+        for col,word in enumerate(inner):
+            print(f"{word:{col_len[col]}}",end="    ")
+        print()
+
+    """
+
+# x = arithmetic_arranger(["3 + 855", "3801 - 2", "45 + 43", "123 + 49"])
+y = arithmetic_arranger(["3 - 698", "3801 - 2", "45 + 43", "123 + 49"], True)
+print(y)
+
+
+
+"""
+# -------- FIGURE OUT STUFF
+
+
+a = [['a', 'b', 'c'], ['aaaaaaaaaa', 'b', 'c'], ['a', 'b', 'c']]
+
+
+data = [['FirstFirst', 'FirstSecond', 'FirstThird'],
+        ['SecondFirst', 'SecondSecond', 'SecondThird'],
+        ['ThirdFirst', 'ThirdSecond', 'ThirdThird'],
+        ['foo', 'verylongwordinsidehere', 'bar', ]]    # changed to a longer one
+
+data = [['1','11111111111','1'],
+       ['+ 1', '+ 2'.rjust(10),'+ 1'],
+       ['---','-----','---']]
+
+# transpose the list, get the max of each column and store in
+# as dict[column]=length
+
+col_len = {i:max(map(len,inner)) for i,inner in enumerate(zip(*data))}
+
+# print(col_len) # {0: 11, 1: 22, 2: 11}
+
+# print using the column index from enumerate to lookup this columns lenght
+for inner in data:
+    for col,word in enumerate(inner):
+        print(f"{word:{col_len[col]}}",end=" | ")
+    print()
+"""
+
+
+
+
+
+
+
+
+# ...
