@@ -17,8 +17,6 @@ Output:
   40     -3800     19998      474
 """
 
-
-
 # Function to cnvert a list to string using join() function
 def listToString(s):
 

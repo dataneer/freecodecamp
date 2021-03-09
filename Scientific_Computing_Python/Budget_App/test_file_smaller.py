@@ -1,13 +1,51 @@
-from budget_app import *
+
+# This is just a development playground
+
+from budget import *
 
 food = Category("Food")
-food.deposit(1000, "initial deposit")
-food.withdraw(10.15, "groceries")
-food.withdraw(15.89, "restaurant and more food for dessert")
-print(food.get_balance())
-clothing = Category("Clothing")
-food.transfer(50, clothing)
-print(food.get_balance())
+entertainment = Category("Entertainment")
+business = Category("Business")
+
+food.deposit(900, "deposit")
+actual = food.ledger[0]
 
 
-print("Clothing bal:", clothing.get_balance())
+food.deposit(45.56)
+actual = food.ledger[0]
+
+
+food.deposit(900, "deposit")
+food.withdraw(45.67, "milk, cereal, eggs, bacon, bread")
+
+
+food.deposit(900, "deposit")
+good_withdraw = food.withdraw(45.67)
+
+food.deposit(900, "deposit")
+food.withdraw(45.67, "milk, cereal, eggs, bacon, bread")
+
+
+food.deposit(900, "deposit")
+food.withdraw(45.67, "milk, cereal, eggs, bacon, bread")
+good_transfer = food.transfer(20, entertainment)
+
+
+food.deposit(10, "deposit")
+actual = food.check_funds(20)
+
+food.deposit(100, "deposit")
+good_withdraw = food.withdraw(100.10)
+
+food.deposit(100, "deposit")
+good_transfer = food.transfer(200, entertainment)
+
+
+food.deposit(900, "deposit")
+food.withdraw(45.67, "milk, cereal, eggs, bacon, bread")
+food.transfer(20, entertainment)
+
+print(food)
+print('-----------------------------------------')
+expected = f"*************Food*************\ndeposit                 900.00\nmilk, cereal, eggs, bac -45.67\nTransfer to Entertainme -20.00\nTotal: 834.33"
+print(expected)

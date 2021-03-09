@@ -76,7 +76,7 @@ class Category:
     # description is given, it should default to an empty string. The method
     # should append an object to the ledger list in the form of
     # `{"amount": amount, "description": description}`.
-    def deposit(self, amount, description):
+    def deposit(self, amount, description=''):
         self.description = description
         # First make the dictionary with your two variables
         dict = {"amount": amount, "description": description}
@@ -90,18 +90,39 @@ class Category:
             balance = sum(item['amount'] for item in self.ledger)
             return balance
 
+    # A `check_funds` method that accepts an amount as an argument. It
+    # returns `False` if the amount is greater than the balance of the budget
+    # category and returns `True` otherwise. This method should be used by
+    # both the `withdraw` method and `transfer` method.
+
+    # Oh snap this is what I don't get for reading the instrunctions in full
+    # because I coded the other methods before doing check_funds, and this was
+    # at the bottom of the requirements
+    # but this probably replicated the need or change is business demands
+
+    def check_funds(self,amount):
+        self.amount = amount
+        balance = sum(item['amount'] for item in self.ledger)
+        if amount > balance:
+            return False
+            print('False')
+        else:
+            return True
+            print('True')
+
     # A `withdraw` method that is similar to the `deposit` method, but the
     # amount passed in should be stored in the ledger as a negative number.
     # If there are not enough funds, nothing should be added to the ledger.
     # This method should return `True` if the withdrawal took place, and
     # False` otherwise.
-    def withdraw(self, withdraw_amt, description):
+    def withdraw(self, withdraw_amt, description=''):
         # save the variables entered in the method to reference
         self.description = description
         for i in self.ledger:
-            # sum the dictionary to get the current balance
-            balance = sum(item['amount'] for item in self.ledger)
-            if withdraw_amt < balance:
+            # BIG MOMENT: here I was originally doing just
+            # 'check_funds(withdraw_amt)' as a function which is incorrect, it's
+            # a method that needs to act upon itself
+            if self.check_funds(withdraw_amt):
                 # subtract the withdraw at by 0 to get the negative value
                 dict = {"amount": 0 - withdraw_amt, "description": description}
                 # TODO: I think this is really bad Pythonic fix later
@@ -139,35 +160,96 @@ class Category:
     # I really don't know how I maed this connection but playing around with
     # bankaccount_class.py helped me understand classes a lot
 
-    def transfer(self, amount, destination):
+    def transfer(self, trnsfr_amt, destination):
         for i in self.ledger:
             # get the balance of the current object that transfer is being
             # acted upon - sorry I konw there's a correct technical term
             # TODO: find the correct technical term^
-            balance = sum(item['amount'] for item in self.ledger)
-            if amount < balance:
-                self.withdraw(amount, f"Transfer to {destination.category}")
-                dict = {"amount": amount, "decsription": f"Transfer from {self.category}"}
+            if self.check_funds(trnsfr_amt):
+                # this part was really funny because it returned an error
+                # because I spelled description as deCsription
+                self.withdraw(trnsfr_amt, f"Transfer to {destination.category}")
+                dict = {"amount": trnsfr_amt, "description": f"Transfer from {self.category}"}
                 # TODO: I think this is really bad Pythonic fix later
                 destination.ledger.append(dict)
-                break
                 return True
+                break
             else:
                 return False
 
-    # A `check_funds` method that accepts an amount as an argument. It
-    # returns `False` if the amount is greater than the balance of the budget
-    # category and returns `True` otherwise. This method should be used by
-    # both the `withdraw` method and `transfer` method.
+    """
+    When the budget object is printed it should display:
+    * A title line of 30 characters where the name of the category is centered
+      in a line of `*` characters.
+    * A list of the items in the ledger. Each line should show the description
+      and amount. The first 23 characters of the description should be
+      displayed, then the amount. The amount should be right aligned,
+      contain two decimal places, and display a maximum of 7 characters.
+    * A line displaying the category total.
 
-    def check_funds(self, amount):
+    Here is an example of the output:
+    ```
+    *************Food*************
+    initial deposit        1000.00
+    groceries               -10.15
+    restaurant and more foo -15.89
+    Transfer to Clothing    -50.00
+    Total: 923.96
+    ```
+    """
+
+    def getName(self):
+        return self.__class__.__name__
+
+    def __repr__(self):
+        rep = self.category
+        return rep
+
+    def __str__(self):
+
+        # For this section I getting assistance from page 133 of
+        # Automate the Boring Stuff by Al Sweigart
+
+        # To accurate we're going to have to remove the values
+        # from the ledger and make the decsription the keys assign the values
+        # as the new
+        # To accomplish this make two seperate lists we can append to
+        description =[]
+        amount = []
+
+        # Loop over each item the ledger which is a list of dictionaries
+        for i in self.ledger:
+            # Enumerate just the values so we can index each value
+            for index,value in enumerate(i.values()):
+                # then based on the mod of the index append to one of our two lists
+                if index % 2 != 0:
+                    description.append(value)
+                else:
+                    amount.append(value)
+
+        # Combine the two lists into one dictionary with a dictionary
+        # comprehension maybe if I keep writing them I'll fully
+        # understand them one day
+
+        total = sum(amount)
+
+        new_dict = {description[i]: amount[i] for i in range(len(description))}
+
+        # Remove the blank string where no description is provided
+        # because that's not what the output wants
+        new_dict = {k: v for k, v in new_dict.items() if k != ''}
+        total_sum = sum(new_dict.values())
 
 
+        # Store the title of the category with formatting of 30 characters *
+        title = str(self.category).center(30, '*')
 
+        output = title + '\n'
+        for k,v in new_dict.items():
+            output += k[:23].ljust(23, ' ') + "{:.2f}".format(v).rjust(7) + '\n'
+        output = output + 'Total: ' + str(total_sum)
 
-
-
-
+        return output
 
 """
 Besides the `Category` class, create a function (outside of the class) called
@@ -188,3 +270,6 @@ This function will be tested with up to four categories.
 Look at the example output below very closely and make sure the spacing of the
 output matches the example exactly.
 """
+
+def create_spend_chart(x):
+    pass
