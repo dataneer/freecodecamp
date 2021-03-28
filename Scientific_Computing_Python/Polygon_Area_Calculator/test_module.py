@@ -111,5 +111,6 @@ class UnitTests(unittest.TestCase):
         expected = 0
         self.assertEqual(actual, expected, 'Expected `get_amount_inside` to return 0.')
 
+
 if __name__ == "__main__":
     unittest.main()

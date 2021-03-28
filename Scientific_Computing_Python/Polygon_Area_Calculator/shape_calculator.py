@@ -44,7 +44,7 @@ class Rectangle:
             # of self.height
             picture_lst = [pic_width] * self.height
             # Combine picture_lst into a string with new lines using .join()
-            picture_shape = '\n'.join(picture_lst)
+            picture_shape = '\n'.join(picture_lst) + '\n'
             return picture_shape
 
     # * `get_amount_inside`: Takes another shape (square or rectangle) as an
@@ -52,7 +52,6 @@ class Rectangle:
     # the shape (with no rotations). For instance, a rectangle with a width of
     # 4 and a height of 8 could fit in two squares with sides of 4.
     def get_amount_inside(self, shape):
-        # first d
         if self.width > shape.width and self.height > shape.height:
             # Use flat division to compare whole numbers
             compare_w = self.width // shape.width
@@ -60,12 +59,7 @@ class Rectangle:
             inside_shape = compare_w * compare_h
             return inside_shape
         else:
-            return "Shape too large."
-
-    # Additionally, if an instance of a Rectangle is represented as a string,
-    # it should look like: `Rectangle(width=5, height=10)`
-    # print(f"Rectangle(width=5{self.width}, height={self.height})")
-
+            return 0
 
 class Square(Rectangle):
 
@@ -87,24 +81,13 @@ class Square(Rectangle):
         self.width = side_num
         self.height = side_num
 
+"""
+rect2 = shape_calculator.Rectangle(2, 3)
+actual = rect2.get_amount_inside(self.rect)
+expected = 0
 
 
-
-
-rect = Rectangle(10, 5)
-print(rect.get_area())
-rect.set_height(3)
-print(rect.get_perimeter())
-print(rect)
-print(rect.get_picture())
-
-sq = Square(9)
-print(sq.get_area())
-sq.set_side(4)
-print(sq.get_diagonal())
-print(sq)
-print(sq.get_picture())
-
-rect.set_height(8)
-rect.set_width(16)
-print(rect.get_amount_inside(sq))
+rect2 = Rectangle(2, 3)
+x = rect2.get_amount_inside(rect2)
+print(x)
+"""
