@@ -42,7 +42,7 @@ class Hat:
         # Append k to self.contents N times based on v
         # use range() to loop N times based on v
         # use items() to access the keys and values in self.balls
-        self.contents = sorted([k for k,v in self.balls.items() for i in range(v)])
+        self.contents = [k for k,v in self.balls.items() for i in range(v)]
 
         # Comment: I think list comprehensions are ugly
 
@@ -58,12 +58,19 @@ class Hat:
         # Assign an empty list variable of removed balls
         removed_balls = []
 
-        for i in range(num):
-            # print('Draw #', i+1 )
+        # Store a copy of self.contents here that will always remain
+        # the same
+        copy_contents = copy.copy(self.contents)
 
-            # Assign a random index to rand_index_balldict based on a number
+        for i in range(num):
+            # print('Draw:', i)
+            if len(removed_balls) < 0:
+                for i in removed_balls:
+                    self.contents.append(i)
+
+            # Assign a random index to rand_index_ball_dict based on a number
             # between 0 and the length of the dictionary minus one (1)
-            rand_index_balldict = random.randint(0,len(self.balls)-1)
+            rand_index_ball_dict = random.randint(0,len(self.balls)-1)
 
             # Use the dictionary as a fixed point for what balls should be in
             # the balls_list
@@ -75,15 +82,20 @@ class Hat:
 
             for i, key in enumerate(self.balls.keys()):
                 # Check if the enumrated i matches the random index
-                if i == rand_index_balldict:
+                if i == rand_index_ball_dict:
                     # Concatentate the string key to the single_ball string variable
                     single_ball += key
 
-            # Check if the single_ball is in self.contents list
-            if single_ball in self.contents:
+            # Check if the single_ball is in copy_contents AND
+            # in self.contents list to ensure that if a ball is not in
+            # self.contents this if statement will not run
+            if single_ball in copy_contents:
 
-                # Append the single ball to removed_balls
+                # Append the single_ball to removed_balls
                 removed_balls.append(single_ball)
+
+                # Remove the single_ball from self.contents
+                self.contents.remove(single_ball)
 
             # Else the single_ball is not in self.contents
             else:
@@ -91,11 +103,13 @@ class Hat:
                 # the condition of all the balls removed is satisfied
                 while removed_balls.count(single_ball) > 0:
                     self.contents.append(single_ball)
+                    removed_balls.remove(single_ball)
             # print(removed_balls)
-        # print('----New Draw----')
-        # print('removed_balls:', removed_balls)
-        # print('self.contents:', self.contents)
+        print('----New Draw----')
+        print('removed_balls:', removed_balls)
+        print('self.contents:', self.contents)
 
+        removed_balls = sorted(removed_balls)
         return removed_balls
 
 
@@ -156,23 +170,37 @@ def experiment(hat, expected_balls, num_balls_drawn, num_experiments):
         expected = Counter(expected_balls)
         observed = Counter(drawn_balls_list)
 
+        # print('expected:', expected)
+        # print('observed:', observed)
+
         # Ok so & is a bitwise operator that compares binary numbers
         # "Sets each bit to 1 if both bits are 1"
         if expected & observed == expected:
             M = M + 1
         else:
             M = M
-    return M/N
+
+    probability = M / N
+
+    return probability
 
 
-# Hat object
-# hat = Hat(black=6, red=4, green=3)
-# experiment function
+# hat = Hat(red=4, green=3)
 # probability = experiment(hat=hat,
-#                         expected_balls={"red":2,"green":1},
-#                         num_balls_drawn=5,
-#                         num_experiments=50)
+#                   expected_balls={"red":2,"green":1},
+#                   num_balls_drawn=5,
+#                   num_experiments=1)
 
-hat2 = Hat(red=5,blue=2)
-hat2_draw = hat2.draw(2)
-print(hat2_draw)
+# hat = Hat(red=5,blue=2)
+# actual = hat.draw(2)
+# len_contents = len(hat.contents)
+# print(len_contents)
+
+
+hat = Hat(blue=3,red=2,green=6)
+probability = experiment(hat=hat,
+                    expected_balls={"blue":2,"green":1},
+                    num_balls_drawn=4,
+                    num_experiments=5)
+actual = probability
+print(actual)
