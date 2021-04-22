@@ -5,8 +5,14 @@ https://www.freecodecamp.org
 
 https://www.freecodecamp.org/learn/scientific-computing-with-python/
 
-As of February 24, 2021: I am trudging through the Scientific Computing projects. My biggest hurdle is printing formatted information.
-
 Successfully completed:
- * Time Calculator
- * Arithmetic Arranger - 03/02/2021
+ * *Scientific Computing with Python:*
+	* Time Calculator
+ 	* Arithmetic Arranger
+ 	* Budget App
+	* Polygon Area Calculator
+	* Probability Calculator
+
+ * *Data Analysis*
+	* Mean-Variance-Standard Deviation Calculator
+
