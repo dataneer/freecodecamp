@@ -124,21 +124,28 @@ df['cholesterol'] = np.where(df['cholesterol'] > 1, 1, 0)
 df['gluc'] = np.where(df['gluc'] > 1, 1, 0)
 
 print(df.head(10))
+print(df.size)
+print('------------------------------')
 
 # Convert the data into long format and create a chart that shows the
 # value counts of the categorical features using seaborn's `catplot()`.
 # The dataset should be split by 'Cardio' so there is one chart for each
 # `cardio` value. The chart should look like `examples/Figure_1.png.
 
-cardio_melt = pd.melt(df, id_vars=['id'], value_vars=['cardio'])
+cardio_melt = pd.melt(df,
+                      id_vars=['id', 'age', 'gender', 'height', 'weight', 'ap_hi', 'ap_lo', 'cardio'],
+                      value_vars=['cholesterol', 'gluc', 'smoke', 'alco', 'active', 'overweight'])
 
-print(cardio_melt.head(10))
+print(cardio_melt[-5:-1])
+print(cardio_melt.size)
 
 # Draw Categorical Plot
 def draw_cat_plot():
     # Create DataFrame for cat plot using `pd.melt` using just the values
     # from 'cholesterol', 'gluc', 'smoke', 'alco', 'active', and 'overweight'.
-    df_cat = None
+    df_cat = pd.melt(df,
+                     id_vars=['id', 'age', 'gender', 'height', 'weight', 'ap_hi', 'ap_lo', 'cardio'],
+                     value_vars=['cholesterol', 'gluc', 'smoke', 'alco', 'active', 'overweight'])
 
 
     # Group and reformat the data to split it by 'cardio'. Show the counts
