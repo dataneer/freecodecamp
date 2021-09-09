@@ -47,7 +47,7 @@ Use the data to complete the following tasks in `medical_data_visualizer.py`:
   * Convert the data into long format and create a chart that shows the
     value counts of the categorical features using seaborn's `catplot()`.
     The dataset should be split by 'Cardio' so there is one chart for each
-    `cardio` value. The chart should look like `examples/Figure_1.png`.
+    `cardio` value. The chart should look like `examples/Figure_1.png`  .
   * Clean the data. Filter out the following patient segments that
     represent incorrect data:
       - diastolic pressure is higher than systolic (Keep the correct data with

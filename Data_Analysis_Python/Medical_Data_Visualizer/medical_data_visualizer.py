@@ -123,43 +123,51 @@ df['overweight']=[0 if i > 25 else 1 for i in df["weight"]/(df["height"]*.01)**2
 df['cholesterol'] = np.where(df['cholesterol'] > 1, 1, 0)
 df['gluc'] = np.where(df['gluc'] > 1, 1, 0)
 
-print(df.head(10))
-print(df.size)
-print('------------------------------')
-
 # Convert the data into long format and create a chart that shows the
 # value counts of the categorical features using seaborn's `catplot()`.
 # The dataset should be split by 'Cardio' so there is one chart for each
 # `cardio` value. The chart should look like `examples/Figure_1.png.
-
-cardio_melt = pd.melt(df,
-                      id_vars=['id', 'age', 'gender', 'height', 'weight', 'ap_hi', 'ap_lo', 'cardio'],
-                      value_vars=['cholesterol', 'gluc', 'smoke', 'alco', 'active', 'overweight'])
-
-print(cardio_melt[-5:-1])
-print(cardio_melt.size)
 
 # Draw Categorical Plot
 def draw_cat_plot():
     # Create DataFrame for cat plot using `pd.melt` using just the values
     # from 'cholesterol', 'gluc', 'smoke', 'alco', 'active', and 'overweight'.
     df_cat = pd.melt(df,
-                     id_vars=['id', 'age', 'gender', 'height', 'weight', 'ap_hi', 'ap_lo', 'cardio'],
+                     id_vars=['cardio'],
                      value_vars=['cholesterol', 'gluc', 'smoke', 'alco', 'active', 'overweight'])
 
+    print(df_cat.head(19))
 
-    # Group and reformat the data to split it by 'cardio'. Show the counts
-    # of each feature. You will have to rename one of the columns for the
-    # catplot to work correctly.
-    df_cat = None
+    # Group and reformat the data to split it by 'cardio'
+
+    # Show the count of each feature. You will have to rename one of the
+    # columns for the catplot to work correctly.
+
+    # df_cat.groupby('variable').size():
+    #
+    # active         70000
+    # alco           70000
+    # cholesterol    70000
+    # gluc           70000
+    # overweight     70000
+    # smoke          70000
+    # dtype: int64
+
+
+
+    df_cat_two = df_cat.groupby('cardio').count()
+    print('----------------')
+    print(df_cat_two)
 
     # Draw the catplot with 'sns.catplot()'
+    # Syntax: seaborn.ca    tplot(*, x=None, y=None, hue=None, data=None, row=None,
+    # col=None, kind=’strip’, color=None, palette=None, **kwargs)
 
 
 
-    # Do not modify the next two lines
-    fig.savefig('catplot.png')
-    return fig
+    # --- Do not modify the next two lines ---
+    # fig.savefig('catplot.png')
+    # return fig
 
 
 # Draw Heat Map
